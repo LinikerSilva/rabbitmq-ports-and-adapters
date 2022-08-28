@@ -2,6 +2,8 @@ package projeto.application.adapters.controllers;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,7 +49,7 @@ public class OrderController {
   }
 
   @PostMapping
-  public ResponseEntity<OrderDTO> create(@RequestBody OrderDTO orderDTO) {
+  public ResponseEntity<OrderDTO> create(@RequestBody @Valid OrderDTO orderDTO) {
     orderDTO = orderServicePort.create(orderDTO);
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
         .buildAndExpand(orderDTO.getId()).toUri();

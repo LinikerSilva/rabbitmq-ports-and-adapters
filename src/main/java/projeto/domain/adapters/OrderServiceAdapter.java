@@ -2,6 +2,8 @@ package projeto.domain.adapters;
 
 import java.util.Optional;
 
+import javax.validation.constraints.NotEmpty;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -27,19 +29,17 @@ public class OrderServiceAdapter implements OrderServicePort {
   public OrderDTO findById(Long id) {
     Optional<OrderEntity> obj = orderRepositoryPort.findById(id);
     OrderEntity entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-    entity.calculateOrderTotalValue();
     return new OrderDTO(entity, entity.getProducts());
   }
 
   @Override
   public Page<OrderDTO> findAllPaged(PageRequest pageRequest) {
     Page<OrderEntity> list = orderRepositoryPort.findAll(pageRequest);
-    list.forEach(OrderEntity::calculateOrderTotalValue);
     return list.map(x -> new OrderDTO(x, x.getProducts()));
   }
 
   @Override
-  public OrderDTO create(OrderDTO orderDTO) {
+  public OrderDTO create(@NotEmpty OrderDTO orderDTO) {
     OrderEntity newOrder = modelMapper.map(orderDTO, OrderEntity.class);
     newOrder.calculateOrderTotalValue();
     orderRepositoryPort.save(newOrder);
