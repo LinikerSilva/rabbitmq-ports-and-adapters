@@ -1,7 +1,11 @@
 package projeto.adapters.spring.repositories;
 
+import java.util.Optional;
+
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import projeto.adapters.spring.entities.ProductEntity;
 import projeto.domain.ports.repository.ProductRepositoryPort;
@@ -13,6 +17,16 @@ public class ProductRepository implements ProductRepositoryPort {
   private final ProductSpringRepository productSpringRepository;
 
   @Override
+  public Optional<ProductEntity> findById(Long id) {
+    return productSpringRepository.findById(id);
+  }
+
+  @Override
+  public Page<ProductEntity> findAll(PageRequest pageRequest) {
+    return productSpringRepository.findAll(pageRequest);
+  }
+
+  @Override
   public void save(ProductEntity produto) {
     productSpringRepository.save(produto);
   }
@@ -20,5 +34,10 @@ public class ProductRepository implements ProductRepositoryPort {
   @Override
   public ProductEntity getReferenceById(Long id) {
     return productSpringRepository.getReferenceById(id);
+  }
+
+  @Override
+  public void deleteById(Long id) {
+    productSpringRepository.deleteById(id);
   }
 }

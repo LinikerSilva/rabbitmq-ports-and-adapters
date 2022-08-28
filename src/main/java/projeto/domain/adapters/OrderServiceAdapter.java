@@ -41,8 +41,8 @@ public class OrderServiceAdapter implements OrderServicePort {
   @Override
   public OrderDTO create(OrderDTO orderDTO) {
     OrderEntity newOrder = modelMapper.map(orderDTO, OrderEntity.class);
-    orderRepositoryPort.save(newOrder);
     newOrder.calculateOrderTotalValue();
+    orderRepositoryPort.save(newOrder);
     System.out.printf("------>" + newOrder.getId());
     return new OrderDTO(newOrder, newOrder.getProducts());
   }

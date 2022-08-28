@@ -2,11 +2,14 @@ package projeto.domain.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Order {
   private Long id;
   private Date date;
   private BigDecimal total;
+  private Set<Product> products = new HashSet<>();
 
   public Order() {
   }
@@ -39,5 +42,13 @@ public class Order {
 
   public void setTotal(BigDecimal total) {
     this.total = total;
+  }
+
+  public Set<Product> getProducts() {
+    return products;
+  }
+
+  public void setProducts(Set<Product> products) {
+    this.products = products;
   }
 }
