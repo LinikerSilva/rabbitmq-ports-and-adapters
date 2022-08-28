@@ -31,6 +31,9 @@ public class OrderEntity {
   @Column(name = "order_id")
   private Long id;
 
+  @Column(name = "client_id")
+  private Long clientId;
+
   @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE", name = "created_at")
   private Date createdAt;
 

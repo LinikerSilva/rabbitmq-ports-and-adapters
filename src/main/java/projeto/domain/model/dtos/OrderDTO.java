@@ -12,22 +12,25 @@ import projeto.adapters.spring.entities.ProductEntity;
 
 public class OrderDTO implements Serializable {
   private Long id;
-  private Date date;
+  private Long client_id;
+  private Date created_at;
   private BigDecimal total;
   private List<ProductDTO> products = new ArrayList<>();
 
   public OrderDTO() {
   }
 
-  public OrderDTO(Long id, Date date, BigDecimal total) {
+  public OrderDTO(Long id, Long client_id, Date created_at, BigDecimal total) {
     this.id = id;
-    this.date = date;
+    this.client_id = client_id;
+    this.created_at = created_at;
     this.total = total;
   }
 
   public OrderDTO(OrderEntity order) {
     this.id = order.getId();
-    this.date = order.getCreatedAt();
+    this.client_id = order.getClientId();
+    this.created_at = order.getCreatedAt();
     this.total = order.getTotal();
   }
 
@@ -44,12 +47,12 @@ public class OrderDTO implements Serializable {
     this.id = id;
   }
 
-  public Date getDate() {
-    return date;
+  public Date getCreated_at() {
+    return created_at;
   }
 
-  public void setDate(Date date) {
-    this.date = date;
+  public void setCreated_at(Date created_at) {
+    this.created_at = created_at;
   }
 
   public BigDecimal getTotal() {
@@ -66,5 +69,13 @@ public class OrderDTO implements Serializable {
 
   public void setProducts(List<ProductDTO> products) {
     this.products = products;
+  }
+
+  public Long getClient_id() {
+    return client_id;
+  }
+
+  public void setClient_id(Long client_id) {
+    this.client_id = client_id;
   }
 }

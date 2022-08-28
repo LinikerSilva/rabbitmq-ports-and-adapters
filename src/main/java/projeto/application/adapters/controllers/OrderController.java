@@ -49,7 +49,7 @@ public class OrderController {
   }
 
   @PostMapping
-  public ResponseEntity<OrderDTO> create(@RequestBody @Valid OrderDTO orderDTO) {
+  public ResponseEntity<OrderDTO> create(@RequestBody OrderDTO orderDTO) {
     orderDTO = orderServicePort.create(orderDTO);
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
         .buildAndExpand(orderDTO.getId()).toUri();

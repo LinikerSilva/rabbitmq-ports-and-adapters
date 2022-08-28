@@ -2,8 +2,6 @@ package projeto.domain.adapters;
 
 import java.util.Optional;
 
-import javax.validation.constraints.NotEmpty;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -39,8 +37,9 @@ public class OrderServiceAdapter implements OrderServicePort {
   }
 
   @Override
-  public OrderDTO create(@NotEmpty OrderDTO orderDTO) {
+  public OrderDTO create(OrderDTO orderDTO) {
     OrderEntity newOrder = modelMapper.map(orderDTO, OrderEntity.class);
+    newOrder.setClientId(orderDTO.getClient_id());
     newOrder.calculateOrderTotalValue();
     orderRepositoryPort.save(newOrder);
     System.out.printf("------>" + newOrder.getId());
