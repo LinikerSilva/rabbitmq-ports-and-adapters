@@ -26,5 +26,4 @@ public class ProductEntity {
 
   @Column(name = "product_value", nullable = false)
   private BigDecimal value;
-
 }

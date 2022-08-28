@@ -16,4 +16,9 @@ public class ProductRepository implements ProductRepositoryPort {
   public void save(ProductEntity produto) {
     productSpringRepository.save(produto);
   }
+
+  @Override
+  public ProductEntity getReferenceById(Long id) {
+    return productSpringRepository.getReferenceById(id);
+  }
 }

@@ -1,7 +1,11 @@
 package projeto.adapters.spring.repositories;
 
+import java.util.Optional;
+
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import projeto.adapters.spring.entities.OrderEntity;
 import projeto.domain.ports.repository.OrderRepositoryPort;
@@ -13,7 +17,27 @@ public class OrderRepository implements OrderRepositoryPort {
   private final OrderSpringRepository orderSpringRepository;
 
   @Override
+  public Optional<OrderEntity> findById(Long id) {
+    return orderSpringRepository.findById(id);
+  }
+
+  @Override
+  public Page<OrderEntity> findAll(PageRequest pageRequest) {
+    return orderSpringRepository.findAll(pageRequest);
+  }
+
+  @Override
   public void save(OrderEntity order) {
     orderSpringRepository.save(order);
+  }
+
+  @Override
+  public OrderEntity getReferenceById(Long id) {
+    return orderSpringRepository.getReferenceById(id);
+  }
+
+  @Override
+  public void deleteById(Long id) {
+    orderSpringRepository.deleteById(id);
   }
 }
