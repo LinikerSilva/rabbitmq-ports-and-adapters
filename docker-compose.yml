@@ -8,8 +8,8 @@ services:
     volumes:
       - ./data:/var/lib/rabbitmq/
     environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=admin123
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
       
   db:
     image: postgres

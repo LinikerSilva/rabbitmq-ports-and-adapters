@@ -40,7 +40,6 @@ public class ProductServiceAdapter implements ProductServicePort {
   public ProductDTO create(ProductDTO productDTO) {
     ProductEntity newProduct = modelMapper.map(productDTO, ProductEntity.class);
     productRepositoryPort.save(newProduct);
-    System.out.printf("------>" + newProduct.getId());
     return new ProductDTO(newProduct);
   }
 

@@ -4,6 +4,7 @@ package projeto.application.adapters.controllers;
 import java.net.URI;
 
 import lombok.AllArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +30,8 @@ public class ProductController {
 
   private ProductServicePort productServicePort;
 
+  private RabbitTemplate rabbitTemplate;
+
   @GetMapping(value = "/{id}")
   public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
     ProductDTO dto = productServicePort.findById(id);
@@ -50,6 +53,7 @@ public class ProductController {
   @PostMapping
   public ResponseEntity<ProductDTO> create(@RequestBody ProductDTO productDTO) {
     productDTO = productServicePort.create(productDTO);
+    rabbitTemplate.convertAndSend("amq-direct", "order-queue", productDTO.getId());
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
         .buildAndExpand(productDTO.getId()).toUri();
     return ResponseEntity.created(uri).body(productDTO);
