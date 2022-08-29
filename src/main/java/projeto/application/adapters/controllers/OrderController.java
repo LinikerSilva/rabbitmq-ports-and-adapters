@@ -1,10 +1,15 @@
 package projeto.application.adapters.controllers;
 
+import static projeto.config.utils.QueueUtils.EXCHANGE_NAME;
+import static projeto.config.utils.QueueUtils.ORDER_QUEUE;
+import static projeto.config.utils.QueueUtils.PRODUCT_QUEUE;
+
 import java.net.URI;
 
 import javax.validation.Valid;
 
 import lombok.AllArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +35,8 @@ public class OrderController {
 
   private OrderServicePort orderServicePort;
 
+  private RabbitTemplate rabbitTemplate;
+
   @GetMapping(value = "/{id}")
   public ResponseEntity<OrderDTO> findById(@PathVariable Long id) {
     OrderDTO dto = orderServicePort.findById(id);
@@ -51,6 +58,7 @@ public class OrderController {
   @PostMapping
   public ResponseEntity<OrderDTO> create(@RequestBody OrderDTO orderDTO) {
     orderDTO = orderServicePort.create(orderDTO);
+    rabbitTemplate.convertAndSend(EXCHANGE_NAME, ORDER_QUEUE, orderDTO.getId());
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
         .buildAndExpand(orderDTO.getId()).toUri();
     return ResponseEntity.created(uri).body(orderDTO);

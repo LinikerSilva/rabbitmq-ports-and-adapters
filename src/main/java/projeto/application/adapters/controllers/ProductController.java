@@ -1,6 +1,9 @@
 package projeto.application.adapters.controllers;
 
 
+import static projeto.config.utils.QueueUtils.EXCHANGE_NAME;
+import static projeto.config.utils.QueueUtils.PRODUCT_QUEUE;
+
 import java.net.URI;
 
 import lombok.AllArgsConstructor;
@@ -19,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import projeto.domain.model.dtos.OrderDTO;
 import projeto.domain.model.dtos.ProductDTO;
 import projeto.domain.ports.service.ProductServicePort;
 
@@ -53,7 +55,7 @@ public class ProductController {
   @PostMapping
   public ResponseEntity<ProductDTO> create(@RequestBody ProductDTO productDTO) {
     productDTO = productServicePort.create(productDTO);
-    rabbitTemplate.convertAndSend("amq-direct", "order-queue", productDTO.getId());
+    rabbitTemplate.convertAndSend(EXCHANGE_NAME, PRODUCT_QUEUE, productDTO.getId());
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
         .buildAndExpand(productDTO.getId()).toUri();
     return ResponseEntity.created(uri).body(productDTO);

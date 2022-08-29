@@ -1,5 +1,10 @@
 package projeto.config;
 
+import static projeto.config.utils.QueueUtils.CLIENT_QUEUE;
+import static projeto.config.utils.QueueUtils.EXCHANGE_NAME;
+import static projeto.config.utils.QueueUtils.ORDER_QUEUE;
+import static projeto.config.utils.QueueUtils.PRODUCT_QUEUE;
+
 import javax.annotation.PostConstruct;
 
 import lombok.AllArgsConstructor;
@@ -21,7 +26,7 @@ public class MQConfig {
   }
 
   private DirectExchange directExchange() {
-    return new DirectExchange("amq-direct");
+    return new DirectExchange(EXCHANGE_NAME);
   }
 
   private Binding relate(Queue queue, DirectExchange directExchange) {
@@ -30,12 +35,24 @@ public class MQConfig {
 
   @PostConstruct
   private void create() {
-    Queue queue = queue("order-queue");
-    DirectExchange directExchange = directExchange();
-    Binding relate = relate(queue, directExchange);
+    Queue productQueue = queue(PRODUCT_QUEUE);
+    Queue orderQueue = queue(ORDER_QUEUE);
+    Queue clientQueue = queue(CLIENT_QUEUE);
 
-    amqpAdmin.declareQueue(queue);
+    DirectExchange directExchange = directExchange();
+
+    Binding relateProduct = relate(productQueue, directExchange);
+    Binding relateOrder = relate(orderQueue, directExchange);
+    Binding relateClient = relate(clientQueue, directExchange);
+
+    amqpAdmin.declareQueue(productQueue);
+    amqpAdmin.declareQueue(orderQueue);
+    amqpAdmin.declareQueue(clientQueue);
+
     amqpAdmin.declareExchange(directExchange);
-    amqpAdmin.declareBinding(relate);
+
+    amqpAdmin.declareBinding(relateProduct);
+    amqpAdmin.declareBinding(relateOrder);
+    amqpAdmin.declareBinding(relateClient);
   }
 }

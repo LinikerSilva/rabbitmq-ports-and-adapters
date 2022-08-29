@@ -1,8 +1,13 @@
 package projeto.application.adapters.controllers;
 
+import static projeto.config.utils.QueueUtils.CLIENT_QUEUE;
+import static projeto.config.utils.QueueUtils.EXCHANGE_NAME;
+import static projeto.config.utils.QueueUtils.ORDER_QUEUE;
+
 import java.net.URI;
 
 import lombok.AllArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +33,7 @@ public class ClientController {
 
   private ClientServicePort clientServicePort;
 
+  private RabbitTemplate rabbitTemplate;
   @GetMapping(value = "/{id}")
   public ResponseEntity<ClientDTO> findById(@PathVariable Long id) {
     ClientDTO dto = clientServicePort.findById(id);
@@ -49,6 +55,7 @@ public class ClientController {
   @PostMapping
   public ResponseEntity<ClientDTO> create(@RequestBody ClientDTO clientDTO) {
     clientDTO = clientServicePort.create(clientDTO);
+    rabbitTemplate.convertAndSend(EXCHANGE_NAME, CLIENT_QUEUE, clientDTO.getId());
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
         .buildAndExpand(clientDTO.getId()).toUri();
     return ResponseEntity.created(uri).body(clientDTO);
