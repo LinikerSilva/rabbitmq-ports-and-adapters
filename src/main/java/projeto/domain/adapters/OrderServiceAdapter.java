@@ -1,8 +1,11 @@
 package projeto.domain.adapters;
 
+import static projeto.config.utils.QueueUtils.ORDER_QUEUE;
+
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -42,7 +45,6 @@ public class OrderServiceAdapter implements OrderServicePort {
     newOrder.setClientId(orderDTO.getClient_id());
     newOrder.calculateOrderTotalValue();
     orderRepositoryPort.save(newOrder);
-    System.out.printf("------>" + newOrder.getId());
     return new OrderDTO(newOrder, newOrder.getProducts());
   }
 
@@ -70,5 +72,17 @@ public class OrderServiceAdapter implements OrderServicePort {
     catch (DataIntegrityViolationException e) {
       throw new DatabaseException("Integrity violation");
     }
+  }
+
+  @RabbitListener(queues = ORDER_QUEUE)
+  private void subscribe(Long id) {
+    Optional<OrderEntity> obj = orderRepositoryPort.findById(id);
+    OrderEntity entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found in Order Queue"));
+    OrderDTO orderDTO = new OrderDTO(entity, entity.getProducts());
+    OrderEntity newOrder = modelMapper.map(orderDTO, OrderEntity.class);
+    newOrder.setStatus("DONE");
+    newOrder.setClientId(orderDTO.getClient_id());
+    newOrder.setCreatedAt(orderDTO.getCreated_at());
+    orderRepositoryPort.save(newOrder);
   }
 }

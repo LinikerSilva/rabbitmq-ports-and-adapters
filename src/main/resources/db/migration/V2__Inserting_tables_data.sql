@@ -6,10 +6,10 @@ INSERT INTO products (name, product_value) VALUES ('Mouse', 300.0);
 INSERT INTO clients (name) VALUES ('Rodrigo de Souza Paula');
 INSERT INTO clients (name) VALUES ('João Freitas da Silva');
 
-INSERT INTO orders (client_id, created_at, total) VALUES (1, CURRENT_TIMESTAMP, 325.0);
-INSERT INTO orders (client_id, created_at, total) VALUES (1, CURRENT_TIMESTAMP, 2800.0);
-INSERT INTO orders (client_id, created_at, total) VALUES (2, CURRENT_TIMESTAMP, 2525.0);
-INSERT INTO orders (client_id, created_at, total) VALUES (2, CURRENT_TIMESTAMP, 600.0);
+INSERT INTO orders (status, client_id, created_at, total) VALUES ('DONE', 1, CURRENT_TIMESTAMP, 325.0);
+INSERT INTO orders (status, client_id, created_at, total) VALUES ('DONE', 1, CURRENT_TIMESTAMP, 2800.0);
+INSERT INTO orders (status, client_id, created_at, total) VALUES ('DONE', 2, CURRENT_TIMESTAMP, 2525.0);
+INSERT INTO orders (status, client_id, created_at, total) VALUES ('DONE', 2, CURRENT_TIMESTAMP, 600.0);
 
 INSERT INTO tb_order_product (order_id, product_id) VALUES (1, 1);
 INSERT INTO tb_order_product (order_id, product_id) VALUES (1, 2);

@@ -5,10 +5,12 @@ import static projeto.config.utils.QueueUtils.ORDER_QUEUE;
 import static projeto.config.utils.QueueUtils.PRODUCT_QUEUE;
 
 import java.net.URI;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import lombok.AllArgsConstructor;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,13 +27,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import projeto.adapters.spring.entities.OrderEntity;
+import projeto.config.utils.QueueUtils;
 import projeto.domain.model.dtos.OrderDTO;
+import projeto.domain.ports.repository.OrderRepositoryPort;
 import projeto.domain.ports.service.OrderServicePort;
 
 @RestController
 @RequestMapping("/orders")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class OrderController {
+
+  private final OrderRepositoryPort orderRepositoryPort;
 
   private OrderServicePort orderServicePort;
 

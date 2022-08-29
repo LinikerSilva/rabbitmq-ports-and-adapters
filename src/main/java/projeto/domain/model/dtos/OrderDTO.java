@@ -15,16 +15,18 @@ public class OrderDTO implements Serializable {
   private Long client_id;
   private Date created_at;
   private BigDecimal total;
+  private String status;
   private List<ProductDTO> products = new ArrayList<>();
 
   public OrderDTO() {
   }
 
-  public OrderDTO(Long id, Long client_id, Date created_at, BigDecimal total) {
+  public OrderDTO(Long id, Long client_id, Date created_at, BigDecimal total, String status) {
     this.id = id;
     this.client_id = client_id;
     this.created_at = created_at;
     this.total = total;
+    this.status = status;
   }
 
   public OrderDTO(OrderEntity order) {
@@ -32,6 +34,7 @@ public class OrderDTO implements Serializable {
     this.client_id = order.getClientId();
     this.created_at = order.getCreatedAt();
     this.total = order.getTotal();
+    this.status = order.getStatus();
   }
 
   public OrderDTO(OrderEntity entity, Set<ProductEntity> products) {
@@ -61,6 +64,14 @@ public class OrderDTO implements Serializable {
 
   public void setTotal(BigDecimal total) {
     this.total = total;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
   }
 
   public List<ProductDTO> getProducts() {

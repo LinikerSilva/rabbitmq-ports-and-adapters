@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,7 +41,10 @@ public class OrderEntity {
   @Column(name = "total", nullable = false)
   private BigDecimal total;
 
-  @ManyToMany
+  @Column(name = "status")
+  private String status;
+
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "tb_order_product",
       joinColumns = @JoinColumn(name = "order_id"),
       inverseJoinColumns = @JoinColumn(name = "product_id"))
@@ -51,6 +55,7 @@ public class OrderEntity {
     createdAt = Date.from(Instant.now());
     total = BigDecimal.ZERO;
     calculateOrderTotalValue();
+    status = "PROCESSING";
   }
 
   public void calculateOrderTotalValue() {
