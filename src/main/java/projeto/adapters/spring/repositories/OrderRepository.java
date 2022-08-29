@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import projeto.adapters.spring.entities.OrderEntity;
 import projeto.domain.ports.repository.OrderRepositoryPort;
@@ -22,8 +23,8 @@ public class OrderRepository implements OrderRepositoryPort {
   }
 
   @Override
-  public Page<OrderEntity> findAll(PageRequest pageRequest) {
-    return orderSpringRepository.findAll(pageRequest);
+  public Page<OrderEntity> findAll(Pageable pageable) {
+    return orderSpringRepository.findAll(pageable);
   }
 
   @Override

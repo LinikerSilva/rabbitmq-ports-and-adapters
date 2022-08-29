@@ -6,7 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import projeto.adapters.spring.entities.ProductEntity;
 import projeto.domain.adapters.exceptions.DatabaseException;
 import projeto.domain.adapters.exceptions.ResourceNotFoundException;
@@ -31,8 +31,8 @@ public class ProductServiceAdapter implements ProductServicePort {
   }
 
   @Override
-  public Page<ProductDTO> findAllPaged(PageRequest pageRequest) {
-    Page<ProductEntity> list = productRepositoryPort.findAll(pageRequest);
+  public Page<ProductDTO> findAllPaged(Pageable pageable) {
+    Page<ProductEntity> list = productRepositoryPort.findAll(pageable);
     return list.map(ProductDTO::new);
   }
 

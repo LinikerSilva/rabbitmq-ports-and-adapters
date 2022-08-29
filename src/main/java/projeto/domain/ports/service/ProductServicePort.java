@@ -1,14 +1,14 @@
 package projeto.domain.ports.service;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import projeto.domain.model.dtos.ProductDTO;
 
 public interface ProductServicePort {
 
   ProductDTO findById(Long id);
 
-  Page<ProductDTO> findAllPaged(PageRequest pageRequest);
+  Page<ProductDTO> findAllPaged(Pageable pageable);
 
   ProductDTO create(ProductDTO productDTO);
 

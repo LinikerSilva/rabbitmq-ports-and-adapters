@@ -9,7 +9,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import projeto.adapters.spring.entities.OrderEntity;
 import projeto.domain.adapters.exceptions.DatabaseException;
 import projeto.domain.adapters.exceptions.ResourceNotFoundException;
@@ -34,8 +34,8 @@ public class OrderServiceAdapter implements OrderServicePort {
   }
 
   @Override
-  public Page<OrderDTO> findAllPaged(PageRequest pageRequest) {
-    Page<OrderEntity> list = orderRepositoryPort.findAll(pageRequest);
+  public Page<OrderDTO> findAllPaged(Pageable pageable) {
+    Page<OrderEntity> list = orderRepositoryPort.findAll(pageable);
     return list.map(x -> new OrderDTO(x, x.getProducts()));
   }
 

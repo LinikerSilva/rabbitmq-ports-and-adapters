@@ -39,4 +39,9 @@ public class ClientEntity {
       order.calculateOrderTotalValue();
     }
   }
+
+  public ClientEntity(Long id, String name) {
+    this.id = id;
+    this.name = name;
+  }
 }

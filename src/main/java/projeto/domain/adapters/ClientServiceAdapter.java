@@ -6,7 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import projeto.adapters.spring.entities.ClientEntity;
 import projeto.domain.adapters.exceptions.DatabaseException;
 import projeto.domain.adapters.exceptions.ResourceNotFoundException;
@@ -31,8 +31,8 @@ public class ClientServiceAdapter implements ClientServicePort {
   }
 
   @Override
-  public Page<ClientDTO> findAllPaged(PageRequest pageRequest) {
-    Page<ClientEntity> list = clientRepositoryPort.findAll(pageRequest);
+  public Page<ClientDTO> findAllPaged(Pageable pageable) {
+    Page<ClientEntity> list = clientRepositoryPort.findAll(pageable);
     return list.map(x -> new ClientDTO(x, x.getOrders()));
   }
 

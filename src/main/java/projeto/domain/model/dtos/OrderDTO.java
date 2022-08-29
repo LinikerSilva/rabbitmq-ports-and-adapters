@@ -21,12 +21,13 @@ public class OrderDTO implements Serializable {
   public OrderDTO() {
   }
 
-  public OrderDTO(Long id, Long client_id, Date created_at, BigDecimal total, String status) {
+  public OrderDTO(Long id, Long client_id, Date created_at, BigDecimal total, String status, List<ProductDTO> products) {
     this.id = id;
     this.client_id = client_id;
     this.created_at = created_at;
     this.total = total;
     this.status = status;
+    this.products.addAll(products);
   }
 
   public OrderDTO(OrderEntity order) {

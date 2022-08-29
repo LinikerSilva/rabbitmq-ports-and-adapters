@@ -18,7 +18,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
@@ -65,5 +67,13 @@ public class OrderEntity {
       orderTotalValue = orderTotalValue.add(productValue);
     }
     this.total = orderTotalValue;
+  }
+
+  public OrderEntity(Long id, Long clientId, Date createdAt, BigDecimal total, String status) {
+    this.id = id;
+    this.clientId = clientId;
+    this.createdAt = createdAt;
+    this.total = total;
+    this.status = status;
   }
 }
